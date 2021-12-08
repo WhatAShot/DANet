@@ -58,7 +58,7 @@ The demo weights for **Forest Cover Type** dataset is available in the folder "`
 - `seed`: int  
    Random seed.
   
-###Model parameters
+### Model parameters
 - `layer`: int (default=20)  
    Number of abstract layers to stack
   
@@ -71,7 +71,7 @@ The demo weights for **Forest Cover Type** dataset is available in the folder "`
 - `drop_rate`: float (default=0.1)
    Dropout rate in shortcut module
   
-###Fit parameters
+### Fit parameters
 - `lr`: float (default=0.008)  
    Learning rate
   
