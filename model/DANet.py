@@ -19,7 +19,7 @@ class GBN(torch.nn.Module):
         self.input_dim = input_dim
         self.virtual_batch_size = virtual_batch_size
         self.bn = nn.BatchNorm1d(self.input_dim)
-    
+
     def forward(self, x):
         if self.training == True:
             chunks = x.chunk(int(np.ceil(x.shape[0] / self.virtual_batch_size)), 0)
@@ -45,7 +45,7 @@ class AbstractLayer(nn.Module):
         super(AbstractLayer, self).__init__()
         self.masker = LearnableLocality(input_dim=base_input_dim, k=k)
         self.fc = nn.Conv1d(base_input_dim * k, 2 * k * base_output_dim, kernel_size=1, groups=k, bias=bias)
-                            
+
         initialize_glu(self.fc, input_dim=base_input_dim * k, output_dim=2 * k * base_output_dim)
         self.bn = GBN(2 * base_output_dim * k, virtual_batch_size)
         self.k = k
