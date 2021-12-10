@@ -12,7 +12,7 @@ Download the datasets from the following links:
 - [Yahoo! Learn to Rank Challenge version 2.0](https://webscope.sandbox.yahoo.com/catalog.php?datatype=c)
 - [YearPrediction](https://archive.ics.uci.edu/ml/datasets/yearpredictionmsd)
 
-(Optional) Before starting the program, you may change the file format to `.pkl` by using `svm2pkl()` or `csv2pkl()` in `./data/data_util.py`
+(Optional) Before starting the program, you may change the file format to `.pkl` by using `svm2pkl()` or `csv2pkl()` functions in `./data/data_util.py`.
 
 ## Weights for inference models
 The demo weights for **Forest Cover Type** dataset is available in the folder "`./Weights/`".
