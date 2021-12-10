@@ -73,7 +73,7 @@ The demo weights for **Forest Cover Type** dataset is available in the folder "`
 - `base_outdim`: int (default=64)  
    The output feature dimension in abstract layer.
    
-- `drop_rate`: float (default=0.1)
+- `drop_rate`: float (default=0.1)  
    Dropout rate in shortcut module
   
 #### Fit parameters
