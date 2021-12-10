@@ -93,13 +93,13 @@ The demo weights for **Forest Cover Type** dataset is available in the folder "`
    Size of the mini batches used for "Ghost Batch Normalization". `virtual_batch_size` must divide `batch_size`.
 
 ### Citations
-`
+```
 @inproceedings{danets, 
    title={DANets: Deep Abstract Networks for Tabular Data Classification and Regression}, 
    author={Chen, Jintai and Liao, Kuanlun and Wan, Yao and Chen, Danny Z and Wu, Jian}, 
    booktitle={AAAI}, 
    year={2022}
  }
- `
+ ```
 
 
