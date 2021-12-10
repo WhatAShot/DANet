@@ -1,5 +1,5 @@
 # Deep Abstract Networks
-A PyTorch code implemented for the submission **[DANets: Deep Abstract Networks for Tabular Data Classification and Regression](https://arxiv.org/abs/2112.02962)**.  
+A PyTorch code implemented for AAAI-2022 paper **[DANets: Deep Abstract Networks for Tabular Data Classification and Regression](https://arxiv.org/abs/2112.02962)**.  
 
 # Downloads  
 ## Dataset  
@@ -20,22 +20,21 @@ The demo weights for **Forest Cover Type** dataset is available in the folder "`
 # How to use
 
 ## Setting  
-1. Clone or download this repository, and `cd` the path where you clone it.
+1. Clone or download this repository, and `cd` the path.
 2. Build a working python environment. Python 3.7 is fine for this repository.
-3. Install packages in `requirements.txt`, e.g., by `pip install -r requirements.txt`.
-4. The default hyperparameters are in `./config/default.py`.
+3. Install packages following the `requirements.txt`, e.g., by using `pip install -r requirements.txt`.
 
 ## Training
-1. Set the hyperparameters in config file (`./config/default.py ` or `./config/*.yaml`).  
+1. Set the hyperparameters in config files (`./config/default.py ` or `./config/*.yaml`).  
    Notably, the hyperparameters in `.yaml` file will cover those in `default.py`.
 
-2. Run `python main.py --c [config_path] --g [gpu_id]`.
+2. Run by `python main.py --c [config_path] --g [gpu_id]`.
     - `-c`: The config file path
     - `-g`: GPU device ID
-3. The checkpoint models and best models will be saved at `./logs`.
+3. The checkpoint models and best models will be saved at the `./logs` file.
     
 ## Inference 
-1. Replace the `resume_dir` path by the file path of model/weight.
+1. Replace the `resume_dir` path with the file path containing your trained model/weight.
 2. Run codes by using `python predict.py -d [dataset_name] -m [model_file_path] -g [gpu_id]`.
     - `-d`: Dataset name
     - `-m`: Model path for loading
@@ -44,10 +43,10 @@ The demo weights for **Forest Cover Type** dataset is available in the folder "`
 ## Config Hyperparameters
 ### Normal parameters
 - `dataset`: str  
-   Dataset name must match those in `./data/dataset.py`.
+   The dataset name given must match those in `./data/dataset.py`.
      
 - `task`: str  
-   Using 'classification' or 'regression'.  
+   Choose one of the pre-given tasks 'classification' and 'regression'. 
      
 - `resume_dir`: str  
    The log path containing the checkpoint models.  
@@ -56,7 +55,7 @@ The demo weights for **Forest Cover Type** dataset is available in the folder "`
    The directory names of the models save at `./logs`.
   
 - `seed`: int  
-   Random seed.
+   The random seed.
   
 ### Model parameters
 - `layer`: int (default=20)  
@@ -76,7 +75,7 @@ The demo weights for **Forest Cover Type** dataset is available in the folder "`
    Learning rate
   
 - `max_epochs`: int (default=5000)  
-   Maximum number of epochs for training.
+   Maximum number of epochs in training.
   
 - `patience`: int (default=1500)  
    Number of consecutive epochs without improvement before performing early stopping. If patience is set to 0, then no early stopping will be performed.  
@@ -85,4 +84,4 @@ The demo weights for **Forest Cover Type** dataset is available in the folder "`
    Number of examples per batch.
   
 - `virtual_batch_size`: int (default=256)  
-   Size of the mini batches used for "Ghost Batch Normalization". `virtual_batch_size` must divide `batch_size`
+   Size of the mini batches used for "Ghost Batch Normalization". `virtual_batch_size` must divide `batch_size`.
