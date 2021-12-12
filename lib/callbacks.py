@@ -139,11 +139,17 @@ class EarlyStopping(Callback):
             self.best_epoch = epoch
             self.wait = 1
             self.best_weights = copy.deepcopy(self.trainer.network.state_dict())
+            self.best_msg = 'Best ' + self.early_stopping_metric + ':{:.5f}'.format(self.best_loss) + ' on epoch ' + str(self.best_epoch)
+            if self.trainer.log:
+                self.trainer.log.save_best_model(self.trainer.network)
         else:
             if self.wait >= self.patience:
                 self.stopped_epoch = epoch
                 self.trainer._stop_training = True
             self.wait += 1
+        print(self.best_msg)
+        if self.trainer.log:
+            self.trainer.log.save_log(self.trainer.history['msg'] + '\n' + self.best_msg)
 
     def on_train_end(self, logs=None):
         self.trainer.best_epoch = self.best_epoch
@@ -217,8 +223,10 @@ class History(Callback):
                 msg += f"| {metric_name:<3}: {np.round(metric_value, 5):<8}"
         self.total_time = int(time.time() - self.start_time)
         msg += f"|  {str(datetime.timedelta(seconds=self.total_time)) + 's':<6}"
-        print(msg)
         self.history['msg'] = msg
+        print(msg)
+        if self.trainer.log:
+            self.trainer.log.save_tensorboard(self.epoch_metrics, epoch)
 
     def on_batch_end(self, batch, logs=None):
         batch_size = logs["batch_size"]
