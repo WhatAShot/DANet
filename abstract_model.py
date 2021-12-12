@@ -145,6 +145,7 @@ class DANsModel(BaseEstimator):
 
         print("===> Start training ...")
         for epoch_idx in range(start_epoch, self.max_epochs + 1):
+            self.epoch = epoch_idx
             # Call method on_epoch_begin for all callbacks
             self._callback_container.on_epoch_begin(epoch_idx)
             self._train_epoch(train_dataloader)
@@ -156,23 +157,8 @@ class DANsModel(BaseEstimator):
             # Call method on_epoch_end for all callbacks
             self._callback_container.on_epoch_end(epoch_idx, logs=self.history.epoch_metrics)
 
-            logger_metric = self.history.epoch_metrics
-
-            # Record best metric value and print
-            for tag in logger_metric.keys():
-                if tag.startswith(eval_names[0] + '_' + eval_metric[0]):
-                    current_value = logger_metric[tag]
-            if (self._task == 'classification' and current_value > best_value) or (self._task == 'regression' and current_value < best_value):
-                best_value = current_value
-                best_epoch = str(epoch_idx)
-                if self.log:
-                    self.save_model(epoch_idx, best_value, best_epoch, 'best')
-            best_result = 'Best ' + eval_names[0] + '_' + eval_metric[0] + ':{:.5f}'.format(best_value) + ' on epoch ' + str(best_epoch)
-            print(best_result)
-            if self.log:
-                self.log.save_tensorboard(logger_metric, epoch_idx)
-                self.log.save_log(self.history['msg'] + '\n' + best_result)
-                self.save_model(epoch_idx, best_value, best_epoch, 'checkpoint')
+            #save checkpoint
+            self.save_check()
             print('LR: ' + str(self._optimizer.param_groups[0]['lr']))
             if self._stop_training:
                 break
@@ -210,26 +196,16 @@ class DANsModel(BaseEstimator):
         res = np.vstack(results)
         return self.predict_func(res)
 
-    def save_model(self, epoch_idx, best_value, best_epoch, mode=None):
-        if mode == 'best':
-            save_dict = {
-                'layer_num': self.layer,
-                'base_outdim': self.base_outdim,
-                'k': self.k,
-                'virtual_batch_size': self.virtual_batch_size,
-                'state_dict': self.network.state_dict()
-            }
-            self.log.save_checkpoint(save_dict, mode)
-        else:
-            save_dict = {
-                'epoch': epoch_idx,
-                'model': self.network,
-                # 'state_dict': self.network.state_dict(),
-                'optimizer': self._optimizer.state_dict(),
-                'best_value': best_value,
-                "best_epoch": best_epoch
-            }
-            self.log.save_checkpoint(save_dict, mode)
+    def save_check(self):
+        save_dict = {
+            'epoch': self.epoch,
+            'model': self.network,
+            # 'state_dict': self.network.state_dict(),
+            'optimizer': self._optimizer.state_dict(),
+            'best_value': self._callback_container.callbacks[1].best_loss,
+            "best_epoch": self._callback_container.callbacks[1].best_epoch
+        }
+        torch.save(save_dict, self.log.log_dir + '/checkpoint.pth')
 
 
     def load_model(self, filepath, input_dim, output_dim, n_gpu=1):

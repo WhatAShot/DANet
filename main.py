@@ -12,7 +12,7 @@ os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 
 def get_args():
     parser = argparse.ArgumentParser(description='PyTorch v1.4, DANet Task Training')
-    parser.add_argument('-c', '--config', type=str, required=False, default='config/cardio.yml', metavar="FILE", help='Path to config file')
+    parser.add_argument('-c', '--config', type=str, required=False, default='config/forest_cover_type.yaml', metavar="FILE", help='Path to config file')
     parser.add_argument('-g', '--gpu_id', type=str, default='1', help='GPU ID')
 
     args = parser.parse_args()

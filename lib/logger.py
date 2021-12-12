@@ -32,11 +32,10 @@ class Train_Log():
 
         return start_epoch, model, optimizer, best_value, best_epoch
 
-    def save_checkpoint(self, save_dict, mode):
-        lastest_out_path = self.log_dir + '/' + mode + '.pth'
-        torch.save(save_dict, lastest_out_path)
-        if mode == 'best':
-            print('Save Best model!!')
+    def save_best_model(self, model):
+        lastest_out_path = self.log_dir + '/' + 'best' + '.pth'
+        torch.save(model, lastest_out_path)
+        print('Save Best model!!')
 
     def save_log(self, log):
         mode = 'a' if os.path.exists(self.log_dir + '/log.txt') else 'w'
