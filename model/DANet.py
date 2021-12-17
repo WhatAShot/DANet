@@ -57,11 +57,8 @@ class AbstractLayer(nn.Module):
         x = self.fc(x.view(b, -1, 1))  # [B, k, D] -> [B, k * D, 1] -> [B, k * (2 * D'), 1]
         x = self.bn(x)
         chunks = x.chunk(self.k, 1)  # k * [B, 2 * D', 1]
-        x = [F.relu(torch.sigmoid(x_[:, :self.base_output_dim, :]) * x_[:, self.base_output_dim:, :]) for x_ in chunks]  # k * [B, D', 1]
-        x = torch.cat(x, dim=-1)  # [B, D', k]
-        x = torch.sum(x.transpose_(1, 2), dim=1, keepdim=False)
-        return x
-
+        x = sum([F.relu(torch.sigmoid(x_[:, :self.base_output_dim, :]) * x_[:, self.base_output_dim:, :]) for x_ in chunks])  # k * [B, D', 1] -> [B, D', 1]
+        return x.squeeze(-1)
 
 class BasicBlock(nn.Module):
     def __init__(self, input_dim, base_outdim, k, virtual_batch_size, fix_input_dim, drop_rate):
