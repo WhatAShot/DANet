@@ -220,7 +220,8 @@ class DANsModel(BaseEstimator):
         self.output_dim = output_dim
         self.n_gpu = n_gpu
         load_model = torch.load(filepath, map_location=self.device)
-        self.layer, self.base_outdim, self.k, self.virtual_batch_size = load_model['layer_num'], load_model['base_outdim'], load_model['k'],  load_model['virtual_batch_size']
+        self.layer, self.virtual_batch_size = load_model['layer_num'], load_model['virtual_batch_size']
+        self.k, self.base_outdim = load_model['k'], load_model['base_outdim']
         self._set_network()
         self.network.load_state_dict(load_model['state_dict'])
         self.network.eval()
@@ -408,7 +409,7 @@ class DANsModel(BaseEstimator):
 
         # Early stopping metric is the last eval metric
 
-        self.early_stopping_metric = self._metrics_names[0] if len(self._metrics_names) > 0 else None
+        self.early_stopping_metric = self._metrics_names[-1] if len(self._metrics_names) > 0 else None
 
     def _set_callbacks(self, custom_callbacks):
         """Setup the callbacks functions.
