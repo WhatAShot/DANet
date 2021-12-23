@@ -141,7 +141,13 @@ class EarlyStopping(Callback):
             self.best_weights = copy.deepcopy(self.trainer.network.state_dict())
             self.best_msg = 'Best ' + self.early_stopping_metric + ':{:.5f}'.format(self.best_loss) + ' on epoch ' + str(self.best_epoch)
             if self.trainer.log:
-                self.trainer.log.save_best_model(self.trainer.network)
+                best_model = {'layer_num': self.trainer.layer,
+                              'base_outdim': self.trainer.base_outdim,
+                              'k': self.trainer.k,
+                              'virtual_batch_size': self.trainer.virtual_batch_size,
+                              'state_dict': self.trainer.network.state_dict()
+                              }
+                self.trainer.log.save_best_model(best_model)
         else:
             if self.wait >= self.patience:
                 self.stopped_epoch = epoch
