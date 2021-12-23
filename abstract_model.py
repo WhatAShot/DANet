@@ -76,7 +76,6 @@ class DANsModel(BaseEstimator):
         """Train a neural network stored in self.network
         Using train_dataloader for training data and
         valid_dataloader for validation.
-
         Parameters
         ----------
         X_train : np.ndarray
@@ -172,12 +171,10 @@ class DANsModel(BaseEstimator):
     def predict(self, X):
         """
         Make predictions on a batch (valid)
-
         Parameters
         ----------
         X : a :tensor: `torch.Tensor`
             Input data
-
         Returns
         -------
         predictions : np.array
@@ -210,7 +207,6 @@ class DANsModel(BaseEstimator):
 
     def load_model(self, filepath, input_dim, output_dim, n_gpu=1):
         """Load DANet model.
-
         Parameters
         ----------
         filepath : str
@@ -232,7 +228,6 @@ class DANsModel(BaseEstimator):
     def _train_epoch(self, train_loader):
         """
         Trains one epoch of the network in self.network
-
         Parameters
         ----------
         train_loader : a :class: `torch.utils.data.Dataloader`
@@ -255,14 +250,12 @@ class DANsModel(BaseEstimator):
     def _train_batch(self, X, y):
         """
         Trains one batch of data
-
         Parameters
         ----------
         X : torch.Tensor
             Train matrix
         y : torch.Tensor
             Target matrix
-
         Returns
         -------
         batch_outs : dict
@@ -292,7 +285,6 @@ class DANsModel(BaseEstimator):
     def _predict_epoch(self, name, loader):
         """
         Predict an epoch and update metrics.
-
         Parameters
         ----------
         name : str
@@ -324,12 +316,10 @@ class DANsModel(BaseEstimator):
     def _predict_batch(self, X):
         """
         Predict one batch of data.
-
         Parameters
         ----------
         X : torch.Tensor
             Owned products
-
         Returns
         -------
         np.array
@@ -351,7 +341,6 @@ class DANsModel(BaseEstimator):
     def update_fit_params(self, X_train, y_train, eval_set):
         """
         Set attributes relative to fit function.
-
         Parameters
         ----------
         X_train : np.ndarray
@@ -382,14 +371,12 @@ class DANsModel(BaseEstimator):
 
     def _set_metrics(self, metrics, eval_names):
         """Set attributes relative to the metrics.
-
         Parameters
         ----------
         metrics : list of str
             List of eval metric names.
         eval_names : list of str
             List of eval set names.
-
         """
         metrics = metrics or [self._default_metric]
 
@@ -413,12 +400,10 @@ class DANsModel(BaseEstimator):
 
     def _set_callbacks(self, custom_callbacks):
         """Setup the callbacks functions.
-
         Parameters
         ----------
         custom_callbacks : list of func
             List of callback functions.
-
         """
         # Setup default callbacks history, early stopping and scheduler
         callbacks = []
@@ -457,7 +442,6 @@ class DANsModel(BaseEstimator):
 
     def _construct_loaders(self, X_train, y_train, eval_set):
         """Generate dataloaders for train and eval set.
-
         Parameters
         ----------
         X_train : np.array
@@ -466,14 +450,12 @@ class DANsModel(BaseEstimator):
             Train targets.
         eval_set : list of tuple
             List of eval tuple set (X, y).
-
         Returns
         -------
         train_dataloader : `torch.utils.data.Dataloader`
             Training dataloader.
         valid_dataloaders : list of `torch.utils.data.Dataloader`
             List of validation dataloaders.
-
         """
         # all weights are not allowed for this type of model
         y_train_mapped = self.prepare_target(y_train)
@@ -497,14 +479,12 @@ class DANsModel(BaseEstimator):
     def compute_loss(self, y_score, y_true):
         """
         Compute the loss.
-
         Parameters
         ----------
         y_score : a :tensor: `torch.Tensor`
             Score matrix
         y_true : a :tensor: `torch.Tensor`
             Target matrix
-
         Returns
         -------
         float
@@ -518,12 +498,10 @@ class DANsModel(BaseEstimator):
     def prepare_target(self, y):
         """
         Prepare target before training.
-
         Parameters
         ----------
         y : a :tensor: `torch.Tensor`
             Target matrix.
-
         Returns
         -------
         `torch.Tensor`
