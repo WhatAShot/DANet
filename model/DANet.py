@@ -45,7 +45,6 @@ class AbstractLayer(nn.Module):
         super(AbstractLayer, self).__init__()
         self.masker = LearnableLocality(input_dim=base_input_dim, k=k)
         self.fc = nn.Conv1d(base_input_dim * k, 2 * k * base_output_dim, kernel_size=1, groups=k, bias=bias)
-
         initialize_glu(self.fc, input_dim=base_input_dim * k, output_dim=2 * k * base_output_dim)
         self.bn = GBN(2 * base_output_dim * k, virtual_batch_size)
         self.k = k
@@ -59,6 +58,7 @@ class AbstractLayer(nn.Module):
         chunks = x.chunk(self.k, 1)  # k * [B, 2 * D', 1]
         x = sum([F.relu(torch.sigmoid(x_[:, :self.base_output_dim, :]) * x_[:, self.base_output_dim:, :]) for x_ in chunks])  # k * [B, D', 1] -> [B, D', 1]
         return x.squeeze(-1)
+
 
 class BasicBlock(nn.Module):
     def __init__(self, input_dim, base_outdim, k, virtual_batch_size, fix_input_dim, drop_rate):
