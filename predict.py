@@ -30,28 +30,30 @@ def set_task_model(task):
         metric = mean_squared_error
     return clf, metric
 
-def prepare_data(task, y_train, y_test):
+def prepare_data(task, y_train, y_valid, y_test):
     output_dim = 1
     mu, std = None, None
     if task == 'classification':
         output_dim, train_labels = infer_output_dim(y_train)
         target_mapper = {class_label: index for index, class_label in enumerate(train_labels)}
         y_train = np.vectorize(target_mapper.get)(y_train)
+        y_valid = np.vectorize(target_mapper.get)(y_valid)
         y_test = np.vectorize(target_mapper.get)(y_test)
 
     elif task == 'regression':
         mu, std = y_train.mean(), y_train.std()
         print("mean = %.5f, std = %.5f" % (mu, std))
         y_train = normalize_reg_label(y_train, mu, std)
+        y_valid = normalize_reg_label(y_valid, mu, std)
         y_test = normalize_reg_label(y_test, mu, std)
 
-    return output_dim, std, y_train, y_test
+    return output_dim, std, y_train, y_valid, y_test
 
 if __name__ == '__main__':
     dataset, model_file, task, n_gpu = get_args()
     print('===> Getting data ...')
-    X_train, y_train, X_test, y_test = get_data(dataset)
-    output_dim, std, y_train, y_test = prepare_data(task, y_train, y_test)
+    X_train, y_train, X_valid, y_valid, X_test, y_test = get_data(dataset)
+    output_dim, std, y_train, y_valid, y_test = prepare_data(task, y_train, y_valid, y_test)
     clf, metric = set_task_model(task)
 
     filepath = model_file

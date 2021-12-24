@@ -61,24 +61,26 @@ def set_task_model(task, std=None, seed=1):
     return clf, eval_metric
 
 if __name__ == '__main__':
+if __name__ == '__main__':
     print('===> Setting configuration ...')
     train_config, fit_config, model_config, task, seed, n_gpu = get_args()
     logname = None if train_config['logname'] == '' else train_config['dataset'] + '/' + train_config['logname']
     print('===> Getting data ...')
-    X_train, y_train, X_test, y_test = get_data(train_config['dataset'])
+    X_train, y_train, X_valid, y_valid, X_test, y_test = get_data(train_config['dataset'])
     mu, std = None, None
     if task == 'regression':
         mu, std = y_train.mean(), y_train.std()
         print("mean = %.5f, std = %.5f" % (mu, std))
         y_train = normalize_reg_label(y_train, std, mu)
+        y_valid = normalize_reg_label(y_valid, std, mu)
         y_test = normalize_reg_label(y_test, std, mu)
 
     clf, eval_metric = set_task_model(task, std, seed)
 
     clf.fit(
         X_train=X_train, y_train=y_train,
-        eval_set=[(X_test, y_test)],
-        eval_name=['test'],
+        eval_set=[(X_valid, y_valid)],
+        eval_name=['valid'],
         eval_metric=eval_metric,
         max_epochs=fit_config['max_epochs'], patience=fit_config['patience'],
         batch_size=fit_config['batch_size'], virtual_batch_size=fit_config['virtual_batch_size'],
