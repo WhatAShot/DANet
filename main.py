@@ -61,7 +61,7 @@ def set_task_model(task, std=None, seed=1):
     return clf, eval_metric
 
 if __name__ == '__main__':
-if __name__ == '__main__':
+
     print('===> Setting configuration ...')
     train_config, fit_config, model_config, task, seed, n_gpu = get_args()
     logname = None if train_config['logname'] == '' else train_config['dataset'] + '/' + train_config['logname']
