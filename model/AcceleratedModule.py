@@ -71,12 +71,12 @@ class Extractor(object):
     def __call__(self, abslayer, input_dim, base_out_dim):
         (a, b, e, m, v, s, pw, pb) = self.get_parameter(abslayer)
         wa, wf, ba, bf = self.compute_weights(a, b, e, m, v, s, pw, pb, input_dim, base_out_dim, self.k)
-        return CompressAbstrctLayer(wa, wf, ba, bf)
+        return CompressAbstractLayer(wa, wf, ba, bf)
 
 
-class CompressAbstrctLayer(nn.Module):
+class CompressAbstractLayer(nn.Module):
     def __init__(self, att_w, f_w, att_b, f_b):
-        super(CompressAbstrctLayer, self).__init__()
+        super(CompressAbstractLayer, self).__init__()
         self.att_w = nn.Parameter(att_w)
         self.f_w = nn.Parameter(f_w)
         self.att_bias = nn.Parameter(att_b[None, :, :])
@@ -107,5 +107,5 @@ if __name__ == '__main__':
     computer = Extractor(k=6)
     (a, b, e, m, v, s, pw, pb) = computer.get_parameter(abs_layer)
     wa, wf, ba, bf = computer.compute_weights(a, b, e, m, v, s, pw, pb, 10, 20, 6)
-    acc_abs = CompressAbstrctLayer(wa, wf, ba, bf)
+    acc_abs = CompressAbstractLayer(wa, wf, ba, bf)
     y2 = acc_abs(input_feat)
