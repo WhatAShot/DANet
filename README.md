@@ -20,9 +20,6 @@ Download the datasets from the following links:
 
 (Optional) Before starting the program, you may change the file format to `.pkl` by using `svm2pkl()` or `csv2pkl()` functions in `./data/data_util.py`.
 
-### Weights for inference models
-The demo weights for **Forest Cover Type** dataset is available in the folder "`./Weights/`".
-
 ## How to use
 
 ### Setting  
