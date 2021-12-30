@@ -20,6 +20,8 @@ Download the datasets from the following links:
 
 (Optional) Before starting the program, you may change the file format to `.pkl` by using `svm2pkl()` or `csv2pkl()` functions in `./data/data_util.py`.
 
+The a model weight of the Forest Cover Type is in `./weights`.
+
 ## How to use
 
 ### Setting  
