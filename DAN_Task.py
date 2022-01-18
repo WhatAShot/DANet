@@ -85,7 +85,7 @@ class DANetClassifier(DANsModel):
 
         dataloader = DataLoader(
             PredictDataset(X),
-            batch_size=self.batch_size,
+            batch_size=1024,
             shuffle=False,
         )
 
